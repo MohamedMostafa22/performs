@@ -8,11 +8,17 @@ import {useQuery} from 'react-query';
 import apiRequests from 'apiRequests';
 import isNil from 'lodash/isNil';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import ReactToPdf from 'react-to-pdf';
 import {useCallback} from 'react';
+import {useReactToPrint} from 'react-to-print';
 
 export default function Search() {
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   const history = useHistory();
   const params = useParams();
   const playerId = params && params['0'] !== '' && toNumber(params['0']);
@@ -59,72 +65,85 @@ export default function Search() {
       >
         <AppLoader />
       </Backdrop>
-      <ReactToPdf
-        targetRef={elem}
-        filename={playerData?.name}
-        options={pdfOptions}
-        onComplete={() => setIsExporting(false)}
-      >
-        {({toPdf}) => (
-          <>
-            <AppGridContainer
-              sx={{
-                mb: 8,
-              }}
-            >
-              <Grid item xs={12} sm={6} md={3}>
-                <PlayersAutoComplete
-                  selectedPlayerId={playerId || undefined}
-                  onChange={(newValue) => {
-                    if (newValue) history.push(`/search/${newValue.id}`);
-                    else history.push('/search/');
-                  }}
-                />
-              </Grid>
-              <Grid sm={0} md={6} />
-              {playerId !== false && (
+      <div ref={componentRef}>
+        <ReactToPdf
+          targetRef={elem}
+          filename={playerData?.name}
+          options={pdfOptions}
+          onComplete={() => setIsExporting(false)}
+        >
+          {({toPdf}) => (
+            <>
+              <AppGridContainer
+                sx={{
+                  mb: 8,
+                }}
+              >
                 <Grid item xs={12} sm={6} md={3}>
-                  <Button
-                    fullWidth
-                    size='large'
-                    variant='outlined'
-                    sx={{
-                      height: '100%',
+                  <PlayersAutoComplete
+                    selectedPlayerId={playerId || undefined}
+                    onChange={(newValue) => {
+                      if (newValue) history.push(`/search/${newValue.id}`);
+                      else history.push('/search/');
                     }}
-                    endIcon={<FileDownloadIcon />}
-                    disabled={!playerDetails}
-                    onClick={(e) => {
-                      setIsExporting(true);
-                      toPdf(e);
-                    }}
-                  >
-                    Export
-                  </Button>
+                  />
                 </Grid>
-              )}
-            </AppGridContainer>
-            <Switch>
-              <Route path='/search/:playerId' exact>
-                <PlayerDetails
-                  ref={ref}
-                  // onDimensionsChange={(w, h) => {
-                  //   console.log(`width: ${w}`);
-                  //   console.log(`height: ${h}`);
-                  //   const orientation = w > h ? 'landscape' : 'portrait';
-                  //   const format =
-                  //     orientation === 'landscape'
-                  //       ? [w * 0.6, h * 0.6]
-                  //       : [h * 0.6, w * 0.6];
-                  //   const unit = 'px';
-                  //   setOptions({orientation, format, unit});
-                  // }}
-                  isExporting={isExporting}
-                />
-              </Route>
-            </Switch>
-          </>
-        )}
-      </ReactToPdf>
+                <Grid sm={0} md={6} />
+                {playerId !== false && (
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Button
+                      fullWidth
+                      size='large'
+                      variant='outlined'
+                      sx={{
+                        height: '100%',
+                      }}
+                      endIcon={<FileDownloadIcon />}
+                      disabled={!playerDetails}
+                      onClick={handlePrint}
+                    >
+                      Export
+                    </Button>
+                  </Grid>
+                )}
+              </AppGridContainer>
+              <Switch>
+                <Route path='/search/:playerId' exact>
+                  <PlayerDetails
+                    ref={ref}
+                    // onDimensionsChange={(w, h) => {
+                    //   console.log(`width: ${w}`);
+                    //   console.log(`height: ${h}`);
+                    //   const orientation = w > h ? 'landscape' : 'portrait';
+                    //   const format =
+                    //     orientation === 'landscape'
+                    //       ? [w * 0.6, h * 0.6]
+                    //       : [h * 0.6, w * 0.6];
+                    //   const unit = 'px';
+                    //   setOptions({orientation, format, unit});
+                    // }}
+                    isExporting={isExporting}
+                  />
+                </Route>
+              </Switch>
+            </>
+          )}
+        </ReactToPdf>
+      </div>
     </>
   );
 }
+
+// const Example = () => {
+//   const componentRef = useRef();
+//   const handlePrint = useReactToPrint({
+//     content: () => componentRef.current,
+//   });
+
+//   return (
+//     <div>
+//       <ComponentToPrint ref={componentRef} />
+//       <button onClick={handlePrint}>Print this out!</button>
+//     </div>
+//   );
+// };
