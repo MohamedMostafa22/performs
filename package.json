@@ -70,6 +70,7 @@
     "react-svg-piechart": "^2.4.2",
     "react-swipeable-views": "^0.14.0",
     "react-to-pdf": "^0.0.14",
+    "react-to-print": "^2.14.7",
     "react-tooltip": "^4.2.21",
     "react-trello": "^2.2.11",
     "react-window": "^1.8.6",
@@ -103,18 +104,6 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "babel-eslint": "^10.1.0",
@@ -142,6 +131,18 @@
     "*.+(json|md)": [
       "prettier --write",
       "git add"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 5 chrome version",
+      "last 5 firefox version",
+      "last 5 safari version"
     ]
   }
 }
