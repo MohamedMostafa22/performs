@@ -1,40 +1,28 @@
-import {Link, Typography} from '@mui/material';
-import PropTypes from 'prop-types';
-import {useRecoilValue} from 'recoil';
-import dataSourceMap from './dataSourceMap';
+import { Link, Typography } from "@mui/material";
 
-export default function NavigationLink({id, type, onClick, isLast}) {
-  const itemDataSource = useRecoilValue(dataSourceMap[type]);
-  const itemData = itemDataSource.find((item) => item.id === id);
+export default function NavigationLink({ name, onClick, isLast }) {
   return isLast ? (
     <Typography
-      key={itemData.name}
-      color='text.primary'
+      key={name}
+      color="text.primary"
       sx={{
         fontSize: 15,
       }}
     >
-      {itemData.name}
+      {name}
     </Typography>
   ) : (
     <Link
-      underline='hover'
-      key={itemData?.name}
-      color='inherit'
+      underline="hover"
+      key={name}
+      color="inherit"
       onClick={onClick}
       sx={{
         fontSize: 15,
-        cursor: 'pointer',
+        cursor: "pointer",
       }}
     >
-      {itemData?.name}
+      {name}
     </Link>
   );
 }
-
-NavigationLink.propTypes = {
-  id: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  isLast: PropTypes.bool,
-};

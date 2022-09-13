@@ -4,14 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-/.idea/crema.iml
-/.idea/dictionaries/yogi0.xml
-/.idea/inspectionProfiles/Project_Default.xml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/vcs.xml
-/.idea/workspace.xml
-/.idea/*
 
 # testing
 /coverage
@@ -29,4 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/debug.log

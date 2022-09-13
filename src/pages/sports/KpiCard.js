@@ -1,10 +1,10 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
-import AppCard from '@crema/core/AppCard';
-import {Fonts} from 'shared/constants/AppEnums';
-import ProgressBar from 'components/ProgressBar';
-import {Avatar} from '@mui/material';
+import React from "react";
+import Box from "@mui/material/Box";
+import PropTypes from "prop-types";
+import { Avatar } from "@mui/material";
+import AppCard from "../../components/AppCard";
+import { Fonts } from "../../enums/appEnums";
+import ProgressBar from "../../components/ProgressBar";
 
 const KpiCard = ({
   icon,
@@ -12,49 +12,49 @@ const KpiCard = ({
   progress,
   onClick,
   isIconFullWidth,
-  bgColor = 'grey.200',
+  bgColor = "grey.200",
 }) => {
   return (
     <AppCard
       sxStyle={{
         height: 1,
-        textAlign: 'center',
-        cursor: 'pointer',
+        textAlign: "center",
+        cursor: "pointer",
       }}
       onClick={onClick}
     >
       <Avatar
         sx={{
           padding: !isIconFullWidth && 3,
-          display: 'flex',
-          mb: {xs: 4, xl: 8},
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          height: {xs: 60, md: 80, lg: 90, xl: 130},
-          width: {xs: 60, md: 80, lg: 90, xl: 130},
+          display: "flex",
+          mb: { xs: 4, xl: 8 },
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: { xs: 60, md: 80, lg: 90, xl: 130 },
+          width: { xs: 60, md: 80, lg: 90, xl: 130 },
           backgroundColor: bgColor,
         }}
       >
         {icon && (
           <img
             src={icon}
-            alt=''
+            alt=""
             style={{
-              width: isIconFullWidth ? '100%' : 40,
+              width: isIconFullWidth ? "100%" : 40,
               height: !isIconFullWidth && 40,
             }}
           />
         )}
       </Avatar>
       <Box
-        component='h3'
+        component="h3"
         sx={{
           fontWeight: Fonts.MEDIUM,
           fontSize: 18,
           mb: 5,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
         }}
       >
         {text}
@@ -69,8 +69,8 @@ const KpiCard = ({
 export default KpiCard;
 
 KpiCard.defaultProps = {
-  bgColor: '',
-  value: '',
+  bgColor: "",
+  value: "",
   onClick: () => {},
 };
 

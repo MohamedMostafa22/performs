@@ -1,0 +1,69 @@
+import React from "react";
+import { useBottomScrollListener } from "react-bottom-scroll-listener";
+import { useTheme } from "@mui/material";
+import AppAnimateGroup from "../AppAnimateGroup";
+
+const getEmptyContainer = (ListEmptyComponent) => {
+  if (ListEmptyComponent)
+    return React.isValidElement(ListEmptyComponent) ? (
+      ListEmptyComponent
+    ) : (
+      <ListEmptyComponent />
+    );
+  return null;
+};
+
+const getFooterContainer = (ListFooterComponent) => {
+  if (ListFooterComponent)
+    return React.isValidElement(ListFooterComponent) ? (
+      ListFooterComponent
+    ) : (
+      <ListFooterComponent />
+    );
+  return null;
+};
+const ListView = ({
+  renderRow,
+  onEndReached,
+  data,
+  animation,
+  delay = 0,
+  duration = 200,
+  containerStyle,
+  border,
+  ListFooterComponent,
+  ListEmptyComponent,
+  ...rest
+}) => {
+  const theme = useTheme();
+  const borderStyle = {
+    border: `1px solid ${theme.palette.divider}`,
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: 4,
+    overflow: "hidden",
+  };
+
+  if (!onEndReached) {
+    onEndReached = () => {};
+  }
+
+  let style = containerStyle;
+  if (border) {
+    style = { ...style, ...borderStyle };
+  }
+  useBottomScrollListener(onEndReached, 200);
+  return (
+    <AppAnimateGroup
+      style={{ ...style }}
+      {...rest}
+      enter={{ delay, duration, animation }}
+    >
+      {data.length > 0
+        ? data.map((item, index) => renderRow(item, index))
+        : getEmptyContainer(ListEmptyComponent)}
+      {getFooterContainer(ListFooterComponent)}
+    </AppAnimateGroup>
+  );
+};
+
+export default ListView;

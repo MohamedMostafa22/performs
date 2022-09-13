@@ -1,15 +1,15 @@
-import {Box, Divider, List} from '@mui/material';
-import {AppCard} from '@crema';
-import PieGraph from './PieGraph';
-import PropTypes from 'prop-types';
-import Category from './Category';
+import { Box, Divider, List } from "@mui/material";
+import PieGraph from "./PieGraph";
+import PropTypes from "prop-types";
+import Category from "./Category";
+import AppCard from "../../components/AppCard";
 
-export default function GraphCard({graphData, progress, title}) {
+export default function GraphCard({ graphData, progress, title }) {
   return (
-    <AppCard sxStyle={{height: 1}} title={title}>
+    <AppCard sxStyle={{ height: 1 }} title={title}>
       <Box
         sx={{
-          '& text': {
+          "& text": {
             fill: (theme) => theme.palette.text.primary,
           },
         }}
@@ -24,7 +24,7 @@ export default function GraphCard({graphData, progress, title}) {
       >
         <List>
           {graphData.map((category) => {
-            if (category.name !== '') {
+            if (category.name !== "") {
               return <Category category={category} key={category.name} />;
             }
             return null;
@@ -38,7 +38,7 @@ export default function GraphCard({graphData, progress, title}) {
 GraphCard.defaultProps = {
   graphData: [],
   progress: 0,
-  title: '',
+  title: "",
 };
 
 GraphCard.propTypes = {

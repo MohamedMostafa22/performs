@@ -1,21 +1,21 @@
-import {AppGridContainer, AppLoader} from '@crema';
-import {Grid, useTheme} from '@mui/material';
-import GraphCard from './GraphCard';
-import PropTypes from 'prop-types';
-import {useParams} from 'react-router-dom';
-import {useQuery} from 'react-query';
-import apiRequests from 'apiRequests';
-import isNil from 'lodash/isNil';
+import { Grid, useTheme } from "@mui/material";
+import GraphCard from "./GraphCard";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import isNil from "lodash/isNil";
+import AppLoader from "../../components/AppLoader";
+import AppGridContainer from "../../components/AppGridContainer";
+import apiRequests from "../../apiRequests";
 
 const PlayersDashboard = () => {
   const theme = useTheme();
-  const {teamId} = useParams();
-  const {data: playersTpm, isLoading} = useQuery(
-    ['pillarsDashboard', {teamId}],
-    () => apiRequests.fetchPlayersTpm({team_id: teamId}),
+  const { teamId } = useParams();
+  const { data: playersTpm, isLoading } = useQuery(
+    ["pillarsDashboard", { teamId }],
+    () => apiRequests.fetchPlayersTpm({ team_id: teamId }),
     {
       enabled: !isNil(teamId),
-    },
+    }
   );
 
   if (isLoading) return <AppLoader />;
@@ -27,19 +27,19 @@ const PlayersDashboard = () => {
           <GraphCard
             graphData={[
               {
-                name: 'Strengths',
+                name: "Strengths",
                 value: player.strength_count,
                 color: theme.palette.analytics.done,
                 colorName: theme.palette.analytics.done,
               },
               {
-                name: 'Moderate',
+                name: "Moderate",
                 value: player.intermediate_count,
                 color: theme.palette.analytics.inProgress,
                 colorName: theme.palette.analytics.inProgress,
               },
               {
-                name: 'Weaknesses',
+                name: "Weaknesses",
                 value: player.weakness_count,
                 color: theme.palette.analytics.notStarted,
                 colorName: theme.palette.analytics.notStarted,
@@ -55,7 +55,3 @@ const PlayersDashboard = () => {
 };
 
 export default PlayersDashboard;
-
-PlayersDashboard.propTypes = {
-  teamId: PropTypes.string.isRequired,
-};

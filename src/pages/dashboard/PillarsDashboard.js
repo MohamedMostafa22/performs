@@ -1,20 +1,21 @@
-import {AppGridContainer, AppLoader} from '@crema';
-import {Grid, useTheme} from '@mui/material';
-import GraphCard from './GraphCard';
-import {useQuery} from 'react-query';
-import apiRequests from '../../apiRequests';
-import {useParams} from 'react-router-dom';
-import isNil from 'lodash/isNil';
+import { Grid, useTheme } from "@mui/material";
+import GraphCard from "./GraphCard";
+import { useQuery } from "react-query";
+import apiRequests from "../../apiRequests";
+import { useParams } from "react-router-dom";
+import isNil from "lodash/isNil";
+import AppLoader from "../../components/AppLoader";
+import AppGridContainer from "../../components/AppGridContainer";
 
 const PillarsDashboard = () => {
   const theme = useTheme();
-  const {sportId} = useParams();
-  const {data: pillarsTpm, isLoading} = useQuery(
-    ['pillarsDashboard', {sportId}],
-    () => apiRequests.fetchPillarsTpm({sport_id: sportId}),
+  const { sportId } = useParams();
+  const { data: pillarsTpm, isLoading } = useQuery(
+    ["pillarsDashboard", { sportId }],
+    () => apiRequests.fetchPillarsTpm({ sport_id: sportId }),
     {
       enabled: !isNil(sportId),
-    },
+    }
   );
 
   if (isLoading) return <AppLoader />;
@@ -26,19 +27,19 @@ const PillarsDashboard = () => {
           <GraphCard
             graphData={[
               {
-                name: 'Strengths',
+                name: "Strengths",
                 value: pillar.strength_count,
                 color: theme.palette.analytics.done,
                 colorName: theme.palette.analytics.done,
               },
               {
-                name: 'Moderate',
+                name: "Moderate",
                 value: pillar.intermediate_count,
                 color: theme.palette.analytics.inProgress,
                 colorName: theme.palette.analytics.inProgress,
               },
               {
-                name: 'Weaknesses',
+                name: "Weaknesses",
                 value: pillar.weakness_count,
                 color: theme.palette.analytics.notStarted,
                 colorName: theme.palette.analytics.notStarted,

@@ -1,24 +1,24 @@
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import PropTypes from 'prop-types';
-import TableHeader from '@crema/core/AppTable/TableHeader';
-import {styled, TableCell, TableRow, useTheme} from '@mui/material';
-import {AppTableContainer} from '@crema';
+import React from "react";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import PropTypes from "prop-types";
+import { styled, TableCell, TableRow, useTheme } from "@mui/material";
+import AppTableContainer from "../../components/AppTable/AppTableContainer";
+import TableHeader from "../../components/AppTable/TableHeader";
 
 const StyledTableCell = styled(TableCell)(() => ({
   fontSize: 14,
   padding: 8,
-  '&:first-of-type': {
+  "&:first-of-type": {
     paddingLeft: 20,
   },
-  '&:last-of-type': {
+  "&:last-of-type": {
     paddingRight: 20,
   },
 }));
 
-const TableItem = ({data}) => {
+const TableItem = ({ data }) => {
   const theme = useTheme();
 
   const scoreColors = {
@@ -30,10 +30,10 @@ const TableItem = ({data}) => {
   };
 
   return (
-    <TableRow className='item-hover'>
-      <StyledTableCell align='left'>{data.name}</StyledTableCell>
+    <TableRow className="item-hover">
+      <StyledTableCell align="left">{data.name}</StyledTableCell>
       <StyledTableCell
-        align='justify'
+        align="justify"
         sx={{
           color: scoreColors[data.score],
           pl: 6,
@@ -56,15 +56,15 @@ const TableHeading = () => {
   return (
     <TableHeader>
       <TableCell>Name</TableCell>
-      <TableCell align='left'>Score</TableCell>
+      <TableCell align="left">Score</TableCell>
     </TableHeader>
   );
 };
 
-const MetricsTable = ({metrics}) => {
+const MetricsTable = ({ metrics }) => {
   return (
     <AppTableContainer>
-      <Table stickyHeader className='table'>
+      <Table stickyHeader className="table">
         <TableHead>
           <TableHeading />
         </TableHead>

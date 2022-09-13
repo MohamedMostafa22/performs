@@ -1,43 +1,42 @@
-import {AppCard, AppGridContainer, AppLoader} from '@crema';
-import {Grid, useMediaQuery, useTheme} from '@mui/material';
-import SaleStatics from 'pages/dashboards/ECommerce/SaleStatics';
-import SummaryCard from './SummaryCard';
-import {GiMuscleUp} from 'react-icons/gi';
-import {GiBrokenShield} from 'react-icons/gi';
-import {MdPendingActions} from 'react-icons/md';
-import {BiLike} from 'react-icons/bi';
-import {lightBlue, purple, red} from '@mui/material/colors';
-import VideoCall from 'pages/apps/Wall/VideoCall';
-import MetricsTable from './MetricsTable';
-import ActionsList from './ActionsList';
-import PropTypes from 'prop-types';
-import isNil from 'lodash/isNil';
-import {useQuery} from 'react-query';
-import apiRequests from 'apiRequests';
-import {useParams} from 'react-router-dom';
-import {forwardRef, useEffect} from 'react';
-import exportToPdf from '../../@crema/utility/exportToPdf';
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import SummaryCard from "./SummaryCard";
+import { GiMuscleUp } from "react-icons/gi";
+import { GiBrokenShield } from "react-icons/gi";
+import { MdPendingActions } from "react-icons/md";
+import { BiLike } from "react-icons/bi";
+import { lightBlue, purple, red } from "@mui/material/colors";
+import MetricsTable from "./MetricsTable";
+import ActionsList from "./ActionsList";
+import isNil from "lodash/isNil";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import { forwardRef } from "react";
+import AppLoader from "../../components/AppLoader";
+import AppCard from "../../components/AppCard";
+import apiRequests from "../../apiRequests";
+import { backgroundLight } from "../../theme";
+import VideoCall from "./VideoCall";
+import SaleStatics from "./SaleStatics";
 
-const PlayerDetails = forwardRef(({isExporting}, ref) => {
+const PlayerDetails = forwardRef(({ isExporting = false, playerId }, ref) => {
   const theme = useTheme();
-  const {playerId} = useParams();
 
-  const {data: playersTpm, isLoading: arePlayerTpmsLoading} = useQuery(
-    ['playersTpm', {playerId}],
-    () => apiRequests.fetchPlayersTpm({id: playerId}),
+  const { data: playersTpm, isLoading: arePlayerTpmsLoading } = useQuery(
+    ["playersTpm", { playerId }],
+    () => apiRequests.fetchPlayersTpm({ id: playerId }),
     {
       enabled: !isNil(playerId),
-    },
+    }
   );
 
   const playerTpm = playersTpm && playersTpm[0];
 
-  const {data: playerDetails, isLoading: arePlayerDetailsLoading} = useQuery(
-    ['playerDetails', {playerId}],
-    () => apiRequests.fetchPlayerDetails({player_id: playerId}),
+  const { data: playerDetails, isLoading: arePlayerDetailsLoading } = useQuery(
+    ["playerDetails", { playerId }],
+    () => apiRequests.fetchPlayerDetails({ player_id: playerId }),
     {
       enabled: !isNil(playerId),
-    },
+    }
   );
 
   // useEffect(() => {
@@ -53,7 +52,7 @@ const PlayerDetails = forwardRef(({isExporting}, ref) => {
   // });
 
   const isLoading = arePlayerTpmsLoading || arePlayerDetailsLoading;
-  const isMDDown = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const isMDDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   if (isLoading) return <AppLoader />;
 
@@ -72,41 +71,54 @@ const PlayerDetails = forwardRef(({isExporting}, ref) => {
   }));
 
   return (
-    <Grid container spacing={isMDDown ? 5 : 8} ref={ref}>
+    <Grid
+      container
+      spacing={isMDDown ? 5 : 8}
+      ref={ref}
+      sx={{
+        backgroundColor: backgroundLight.default,
+        pr: isExporting ? (isMDDown ? 5 * 1.5 : 8 * 1.5) : 0,
+        pb: isExporting && 8,
+      }}
+    >
       <Grid item xs={12} sm={6} md={3}>
         <SummaryCard
           primaryText={playerStrengthsCount}
-          secondaryText='Strengths'
-          bgColor='success.light'
-          icon={<GiMuscleUp size='2em' color={theme.palette.success.main} />}
+          secondaryText="Strengths"
+          bgColor="success.light"
+          icon={<GiMuscleUp size="2em" color={theme.palette.success.main} />}
+          shouldHaveBorder={isExporting}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <SummaryCard
           primaryText={playerWeaknessesCount}
-          secondaryText='Weaknesses'
+          secondaryText="Weaknesses"
           bgColor={red[50]}
-          icon={<GiBrokenShield size='2em' color={theme.palette.error.main} />}
+          icon={<GiBrokenShield size="2em" color={theme.palette.error.main} />}
+          shouldHaveBorder={isExporting}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <SummaryCard
           primaryText={playerActions?.length}
-          secondaryText='Actions'
+          secondaryText="Actions"
           bgColor={lightBlue[50]}
-          icon={<MdPendingActions size='2em' color={lightBlue[500]} />}
+          icon={<MdPendingActions size="2em" color={lightBlue[500]} />}
+          shouldHaveBorder={isExporting}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <SummaryCard
           primaryText={playerRecommendations?.length}
-          secondaryText='Recommendations'
+          secondaryText="Recommendations"
           bgColor={purple[50]}
-          icon={<BiLike size='2em' color={purple[500]} />}
+          icon={<BiLike size="2em" color={purple[500]} />}
+          shouldHaveBorder={isExporting}
         />
       </Grid>
       <Grid item xs={12} md={3}>
-        <VideoCall playerData={playerData} />
+        <VideoCall playerData={playerData} shouldHaveBorder={isExporting} />
       </Grid>
       <Grid item xs={12} md={9}>
         <SaleStatics
@@ -114,62 +126,71 @@ const PlayerDetails = forwardRef(({isExporting}, ref) => {
             name: kpi.kpi__name,
             progress: kpi.coverage,
           }))}
+          shouldHaveBorder={isExporting}
         />
       </Grid>
       <Grid item xs={12} md={6}>
         <AppCard
-          title='Strengths'
+          title="Strengths"
           titleStyle={{
-            color: 'analytics.done',
+            color: "analytics.done",
           }}
           sxStyle={{
-            height: isExporting ? 'auto' : 400,
-            overflow: 'auto',
+            height: isExporting ? "auto" : 400,
+            overflow: "auto",
+            border: isExporting && "1px solid",
+            borderColor: "grey.200",
           }}
         >
           <MetricsTable
-            metrics={formattedMetrics?.filter((metric) => metric.level === 's')}
+            metrics={formattedMetrics?.filter((metric) => metric.level === "s")}
           />
         </AppCard>
       </Grid>
       <Grid item xs={12} md={6}>
         <AppCard
-          title='Weaknesses'
+          title="Weaknesses"
           titleStyle={{
-            color: 'analytics.notStarted',
+            color: "analytics.notStarted",
           }}
           sxStyle={{
-            height: isExporting ? 'auto' : 400,
-            overflow: 'auto',
+            height: isExporting ? "auto" : 400,
+            overflow: "auto",
+            border: isExporting && "1px solid",
+            borderColor: "grey.200",
           }}
         >
           <MetricsTable
-            metrics={formattedMetrics?.filter((metric) => metric.level === 'w')}
+            metrics={formattedMetrics?.filter((metric) => metric.level === "w")}
           />
         </AppCard>
       </Grid>
       <Grid item xs={12} md={6}>
         <AppCard
-          title='Moderate'
+          title="Moderate"
           titleStyle={{
-            color: 'analytics.inProgress',
+            color: "analytics.inProgress",
           }}
           sxStyle={{
-            height: isExporting ? 'auto' : 400,
-            overflow: 'auto',
+            height: isExporting ? "auto" : 400,
+            overflow: "auto",
+            border: isExporting && "1px solid",
+            borderColor: "grey.200",
           }}
         >
           <MetricsTable
-            metrics={formattedMetrics?.filter((metric) => metric.level === 'i')}
+            metrics={formattedMetrics?.filter((metric) => metric.level === "i")}
           />
         </AppCard>
       </Grid>
       <Grid item xs={12} md={6}>
         <AppCard
-          title='Recommendations'
+          title="Recommendations"
           sxStyle={{
-            height: isExporting ? 'auto' : 400,
-            overflow: 'auto',
+            height: isExporting ? "auto" : 400,
+            overflow: "auto",
+            border: isExporting && "1px solid",
+            borderColor: "grey.200",
           }}
         >
           <ActionsList
@@ -183,10 +204,12 @@ const PlayerDetails = forwardRef(({isExporting}, ref) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <AppCard
-          title='Actions'
+          title="Actions"
           sxStyle={{
-            height: isExporting ? 'auto' : 400,
-            overflow: 'auto',
+            height: isExporting ? "auto" : 400,
+            overflow: "auto",
+            border: isExporting && "1px solid",
+            borderColor: "grey.200",
           }}
         >
           <ActionsList
@@ -219,7 +242,3 @@ const PlayerDetails = forwardRef(({isExporting}, ref) => {
 });
 
 export default PlayerDetails;
-
-PlayerDetails.propTypes = {
-  playerId: PropTypes.string.isRequired,
-};

@@ -1,30 +1,29 @@
-import React from 'react';
-import {Cell, Pie, PieChart, ResponsiveContainer} from 'recharts';
-import PropTypes from 'prop-types';
-import {Fonts} from '../../shared/constants/AppEnums';
+import React from "react";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Fonts } from "../../enums/appEnums";
 
-const PieGraph = ({graphData, progress}) => {
+const PieGraph = ({ graphData, progress }) => {
   return (
-    <ResponsiveContainer width='100%' height={250}>
+    <ResponsiveContainer width="100%" height={250}>
       <PieChart>
         <text
-          x='50%'
+          x="50%"
           fontWeight={Fonts.MEDIUM}
           fontSize={20}
-          y='50%'
-          textAnchor='middle'
-          dominantBaseline='middle'
+          y="50%"
+          textAnchor="middle"
+          dominantBaseline="middle"
         >
           {progress}%
         </text>
         <Pie
           data={graphData}
-          dataKey='value'
-          cx='50%'
-          cy='50%'
+          dataKey="value"
+          cx="50%"
+          cy="50%"
           innerRadius={87}
           outerRadius={100}
-          fill='#8884d8'
+          fill="#8884d8"
         >
           {graphData.map((entry, index) => (
             <Cell key={index} fill={entry.color} />
@@ -36,13 +35,3 @@ const PieGraph = ({graphData, progress}) => {
 };
 
 export default PieGraph;
-
-PieGraph.defaultProps = {
-  graphData: [],
-  progress: 0,
-};
-
-PieGraph.propTypes = {
-  graphData: PropTypes.array,
-  progress: PropTypes.number,
-};

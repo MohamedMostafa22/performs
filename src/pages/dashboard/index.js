@@ -1,40 +1,14 @@
-import {AppGridContainer} from '@crema';
-import {Grid} from '@mui/material';
-import PlayerDetails from './PlayerDetails';
-import SportsDashboard from './SportsDashboard';
-import TeamsDashboard from './TeamsDashboard';
-import PlayersDashboard from './PlayersDashboard';
-import {Route, Switch, useHistory, useParams} from 'react-router-dom';
-import PillarsDashboard from './PillarsDashboard';
-import SportsAutoComplete from './SportsAutoComplete';
-import PillarsAutoComplete from './PillarsAutoComplete';
-import TeamsAutoComplete from './TeamsAutoComplete';
-import PlayersAutoComplete from './PlayersAutoComplete';
+import { Grid } from "@mui/material";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import SportsAutoComplete from "./SportsAutoComplete";
+import PillarsAutoComplete from "./PillarsAutoComplete";
+import TeamsAutoComplete from "./TeamsAutoComplete";
+import PlayersAutoComplete from "./PlayersAutoComplete";
+import AppGridContainer from "../../components/AppGridContainer";
 
 export default function Dashboard() {
-  const history = useHistory();
-  const params = useParams();
-
-  const {sportId, pillarId, teamId, playerId} = (() => {
-    const idsString = params && params['0'];
-    const splitParams = idsString && idsString.split('/');
-    if (!Array.isArray(splitParams)) return {};
-    const pillarsIndex = splitParams.findIndex((item) => item === 'pillars');
-    const teamsIndex = splitParams.findIndex((item) => item === 'teams');
-    const playersIndex = splitParams.findIndex((item) => item === 'players');
-
-    const sportId = splitParams[1];
-    const pillarId = pillarsIndex > 0 && splitParams[pillarsIndex + 1];
-    const teamId = teamsIndex > 0 && splitParams[teamsIndex + 1];
-    const playerId = playersIndex > 0 && splitParams[playersIndex + 1];
-
-    return {
-      sportId,
-      pillarId,
-      teamId,
-      playerId,
-    };
-  })();
+  const navigate = useNavigate();
+  const { sportId, pillarId, teamId, playerId } = useParams();
 
   return (
     <>
@@ -48,10 +22,8 @@ export default function Dashboard() {
             selectedSportId={sportId}
             onChange={(newValue) => {
               if (newValue)
-                history.push(
-                  `/players-dashboard/sports/${newValue?.id}/pillars`,
-                );
-              else history.push(`/players-dashboard/`);
+                navigate(`/dashboards/sports/${newValue?.id}/pillars`);
+              else navigate(`/dashboards/`);
             }}
           />
         </Grid>
@@ -62,11 +34,10 @@ export default function Dashboard() {
               selectedPillarId={pillarId}
               onChange={(newValue) => {
                 if (newValue)
-                  history.push(
-                    `/players-dashboard/sports/${sportId}/pillars/${newValue?.id}/teams`,
+                  navigate(
+                    `/dashboards/sports/${sportId}/pillars/${newValue?.id}/teams`
                   );
-                else
-                  history.push(`/players-dashboard/sports/${sportId}/pillars`);
+                else navigate(`/dashboards/sports/${sportId}/pillars`);
               }}
             />
           </Grid>
@@ -78,12 +49,12 @@ export default function Dashboard() {
               selectedPillarId={pillarId}
               onChange={(newValue) => {
                 if (newValue)
-                  history.push(
-                    `/players-dashboard/sports/${sportId}/pillars/${pillarId}/teams/${newValue?.id}/players`,
+                  navigate(
+                    `/dashboards/sports/${sportId}/pillars/${pillarId}/teams/${newValue?.id}/players`
                   );
                 else
-                  history.push(
-                    `/players-dashboard/sports/${sportId}/pillars/${pillarId}/teams`,
+                  navigate(
+                    `/dashboards/sports/${sportId}/pillars/${pillarId}/teams`
                   );
               }}
             />
@@ -96,12 +67,12 @@ export default function Dashboard() {
               selectedPlayerId={playerId}
               onChange={(newValue) => {
                 if (newValue)
-                  history.push(
-                    `/players-dashboard/sports/${sportId}/pillars/${pillarId}/teams/${teamId}/players/${newValue?.id}`,
+                  navigate(
+                    `/dashboards/sports/${sportId}/pillars/${pillarId}/teams/${teamId}/players/${newValue?.id}`
                   );
                 else
-                  history.push(
-                    `/players-dashboard/sports/${sportId}/pillars/${pillarId}/teams/${teamId}/players`,
+                  navigate(
+                    `/dashboards/sports/${sportId}/pillars/${pillarId}/teams/${teamId}/players`
                   );
               }}
             />
@@ -109,32 +80,7 @@ export default function Dashboard() {
         )}
       </AppGridContainer>
 
-      <Switch>
-        <Route path='/players-dashboard/' exact>
-          <SportsDashboard />
-        </Route>
-        <Route path='/players-dashboard/sports/:sportId/pillars' exact>
-          <PillarsDashboard />
-        </Route>
-        <Route
-          path='/players-dashboard/sports/:sportId/pillars/:pillarId/teams'
-          exact
-        >
-          <TeamsDashboard />
-        </Route>
-        <Route
-          path='/players-dashboard/sports/:sportId/pillars/:pillarId/teams/:teamId/players'
-          exact
-        >
-          <PlayersDashboard />
-        </Route>
-        <Route
-          path='/players-dashboard/sports/:sportId/pillars/:pillarId/teams/:teamId/players/:playerId'
-          exact
-        >
-          <PlayerDetails />
-        </Route>
-      </Switch>
+      <Outlet />
     </>
   );
 }

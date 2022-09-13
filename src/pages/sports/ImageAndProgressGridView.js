@@ -1,9 +1,10 @@
-import {AppAnimate, AppGridContainer} from '@crema';
-import {Grid} from '@mui/material';
-import PropTypes from 'prop-types';
-import ImageAndProgressCard from './ImageAndProgressCard';
+import { Grid } from "@mui/material";
+import PropTypes from "prop-types";
+import AppAnimate from "../../components/AppAnimate";
+import AppGridContainer from "../../components/AppGridContainer";
+import ImageAndProgressCard from "./ImageAndProgressCard";
 
-export default function ImageAndProgressGridView({items}) {
+export default function ImageAndProgressGridView({ items }) {
   if (!Array.isArray(items)) return null;
 
   return (
@@ -29,6 +30,6 @@ ImageAndProgressGridView.propTypes = {
       name: PropTypes.string.isRequired,
       progress: PropTypes.number.isRequired,
       imgSrc: PropTypes.string.isRequired,
-    }),
+    })
   ).isRequired,
 };

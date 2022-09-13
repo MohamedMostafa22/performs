@@ -1,8 +1,8 @@
-import AppDialog from '@crema/core/AppDialog';
-import PropTypes from 'prop-types';
-import AddFormMap from './addFormMap';
+import PropTypes from "prop-types";
+import AppDialog from "../../components/AppDialog";
+import AddFormMap from "./addFormMap";
 
-export default function AddDialog({open, onClose, type}) {
+export default function AddDialog({ open, onClose, type }) {
   const FormComponent = AddFormMap[type];
 
   if (!FormComponent) return null;
@@ -13,7 +13,7 @@ export default function AddDialog({open, onClose, type}) {
       open={open}
       onClose={onClose}
       sxStyle={{
-        height: '90vh',
+        height: "90vh",
       }}
     >
       <FormComponent onSubmit={() => onClose && onClose()} />

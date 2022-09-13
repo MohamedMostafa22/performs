@@ -1,21 +1,22 @@
-import {AppGridContainer, AppLoader} from '@crema';
-import {Grid, useTheme} from '@mui/material';
-import GraphCard from './GraphCard';
-import PropTypes from 'prop-types';
-import {useParams} from 'react-router-dom';
-import {useQuery} from 'react-query';
-import apiRequests from 'apiRequests';
-import isNil from 'lodash/isNil';
+import { Grid, useTheme } from "@mui/material";
+import GraphCard from "./GraphCard";
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import isNil from "lodash/isNil";
+import AppLoader from "../../components/AppLoader";
+import AppGridContainer from "../../components/AppGridContainer";
+import apiRequests from "../../apiRequests";
 
 const TeamsDashboard = () => {
   const theme = useTheme();
-  const {pillarId} = useParams();
-  const {data: teamsTpm, isLoading} = useQuery(
-    ['teamsDashboard', {pillarId}],
-    () => apiRequests.fetchTeamsTpm({pillar_id: pillarId}),
+  const { pillarId } = useParams();
+  const { data: teamsTpm, isLoading } = useQuery(
+    ["teamsDashboard", { pillarId }],
+    () => apiRequests.fetchTeamsTpm({ pillar_id: pillarId }),
     {
       enabled: !isNil(pillarId),
-    },
+    }
   );
 
   if (isLoading) return <AppLoader />;
@@ -27,19 +28,19 @@ const TeamsDashboard = () => {
           <GraphCard
             graphData={[
               {
-                name: 'Strengths',
+                name: "Strengths",
                 value: team.strength_count,
                 color: theme.palette.analytics.done,
                 colorName: theme.palette.analytics.done,
               },
               {
-                name: 'Moderate',
+                name: "Moderate",
                 value: team.intermediate_count,
                 color: theme.palette.analytics.inProgress,
                 colorName: theme.palette.analytics.inProgress,
               },
               {
-                name: 'Weaknesses',
+                name: "Weaknesses",
                 value: team.weakness_count,
                 color: theme.palette.analytics.notStarted,
                 colorName: theme.palette.analytics.notStarted,
@@ -55,12 +56,3 @@ const TeamsDashboard = () => {
 };
 
 export default TeamsDashboard;
-
-TeamsDashboard.defaultProps = {
-  isCoach: false,
-};
-
-TeamsDashboard.propTypes = {
-  sportId: PropTypes.string.isRequired,
-  isCoach: PropTypes.bool,
-};

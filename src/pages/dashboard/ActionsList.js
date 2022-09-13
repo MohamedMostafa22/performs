@@ -1,13 +1,13 @@
-import React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import {AppList} from '@crema';
-import {Fonts} from 'shared/constants/AppEnums';
+import React from "react";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import AppList from "../../components/AppList";
+import { Fonts } from "../../enums/appEnums";
 
-const ActionsList = ({items}) => {
+const ActionsList = ({ items }) => {
   return (
     <List>
       <AppList
@@ -20,7 +20,7 @@ const ActionsList = ({items}) => {
                 px: 5,
                 py: 2,
               }}
-              className='item-hover'
+              className="item-hover"
             >
               <ListItemText
                 primary={
@@ -28,16 +28,16 @@ const ActionsList = ({items}) => {
                     sx={{
                       fontWeight: Fonts.MEDIUM,
                       fontSize: 14,
-                      color: 'text.primary',
+                      color: "text.primary",
                     }}
-                    component='span'
+                    component="span"
                   >
                     {item.primaryText}
                   </Box>
                 }
                 secondary={
                   <Box
-                    component='span'
+                    component="span"
                     sx={{
                       fontSize: 12,
                     }}
@@ -55,16 +55,3 @@ const ActionsList = ({items}) => {
 };
 
 export default ActionsList;
-
-ActionsList.defaultProps = {
-  items: [],
-};
-
-ActionsList.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      primaryText: PropTypes.string.isRequired,
-      secondaryText: PropTypes.string.isRequired,
-    }),
-  ),
-};
